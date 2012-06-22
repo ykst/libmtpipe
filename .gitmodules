@@ -1,0 +1,3 @@
+[submodule "external/cinclude"]
+	path = external/cinclude
+	url = git@github.com:ykst/cinclude.git
