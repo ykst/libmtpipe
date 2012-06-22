@@ -1,0 +1,64 @@
+CC     = @CC@
+AR     = @AR@
+RANLIB = @RANLIB@
+STRIP  = @STRIP@
+
+LIB = libmtpipe
+
+DBGLIB = @LIB_DIR@/$(LIB)d.so
+RELLIB = @LIB_DIR@/$(LIB).so
+
+SRCS = mtpipe.c fifo.c rendezvous.c
+HDRS = @INCLUDE_DIR@/mtpipe.h fifo.h rendezvous.h
+
+DBGOBJS = $(SRCS:%.c=debug/%.o)
+RELOBJS = $(SRCS:%.c=release/%.o)
+
+CFLAGS += -I@INCLUDE_DIR@
+CFLAGS += -I@CINCLUDE_DIR@
+CFLAGS += -Wall
+CFALGS += -Werror
+CFLAGS += -Wstrict-aliasing=0
+CFLAGS += -Wpointer-arith
+CFLAGS += -Wdisabled-optimization
+CFLAGS += -Wmissing-prototypes
+CFLAGS += -Wredundant-decls
+CFLAGS += -funit-at-a-time
+CFLAGS += -D_LIBC_REENTRANT
+
+DBGFLAGS += -g -D__DEBUG
+RELFLAGS += -Wuninitialized -O2
+
+LDFLAGS  += -fPIC -shared
+
+.PHONY: all clean test release debug
+
+all: release debug
+
+strip: all
+	$(STRIP) -p $(RELLIB)
+
+release: $(RELLIB)
+
+debug: $(DBGLIB)
+
+$(RELLIB): $(RELOBJS)
+	$(CC) $(LDFLAGS) -o $@ $(RELOBJS)
+
+$(DBGLIB): $(DBGOBJS)
+	$(CC) $(LDFLAGS) -o $@ $(DBGOBJS)
+
+$(RELOBJS): release/%.o: %.c $(HDRS)
+	@mkdir -p release
+	$(CC) $(CFLAGS) $(RELFLAGS) -c -o $@ $<
+
+$(DBGOBJS): debug/%.o: %.c $(HDRS)
+	@mkdir -p debug
+	$(CC) $(CFLAGS) $(DBGFLAGS) -c -o $@ $<
+
+install: strip
+	@INSTALL_APP@ $(RELLIB) @INSTALL_PREFIX@
+	@INSTALL_APP@ $(DBGLIB) @INSTALL_PREFIX@
+
+clean:
+	$(RM) $(RELLIB) $(DBGLIB) $(RELOBJS) $(DBGOBJS)

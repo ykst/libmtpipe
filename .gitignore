@@ -10,3 +10,14 @@
 *.lai
 *.la
 *.a
+
+# Vim
+*.sw[nopq]
+
+# Autoconf
+autom4te.cache
+config.log
+src/config.h
+configure
+config.status
+Makefile

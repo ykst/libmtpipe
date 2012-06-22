@@ -1,0 +1,20 @@
+TARGET=mtpipe
+
+CC=@CC@
+CPPFLAGS+=-I@INCLUDE_DIR@ -I@CINCLUDE_DIR@
+CFLAGS+=-Wall -Werror
+LDFLAGS+=-L@LIB_DIR@
+OBJS=main.o
+
+.PHONY: all clean
+
+all: $(TARGET) $(TARGET)d
+
+$(TARGET): $(OBJS)
+	$(CC) $(LDFLAGS) -o $@ $^ -lmtpipe
+
+$(TARGET)d: $(OBJS)
+	$(CC) $(LDFLAGS) -o $@ $^ -lmtpiped
+
+clean:
+	$(RM) $(TARGET) $(OBJS)
