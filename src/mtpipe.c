@@ -199,7 +199,7 @@ mtnode_handle mtnode_create(
     nh->priv       = params;
     nh->mtpipe     = h;
     nh->id         = h->id_max++;
-    
+
     list_append(&h->node_list, &nh->list_entry);
 
     return nh;
@@ -218,7 +218,7 @@ bool mtpipe_sync_init(mtnode_handle h)
     return true;
 }
 
-static bool 
+    static bool 
 __start_thread(mtnode_handle node)
 {
     struct sched_param  schedParam;
@@ -231,7 +231,7 @@ __start_thread(mtnode_handle node)
 
     /* Force the thread to use custom scheduling attributes */
     ASSERT(pthread_attr_setinheritsched(&attr, PTHREAD_EXPLICIT_SCHED) == 0,
-           return false);
+            return false);
 
     if(node->priority > 0) {
         /* Set the thread to be fifo real time scheduled */
@@ -260,20 +260,7 @@ __start_thread(mtnode_handle node)
     return true;
 }
 
-#define __THREAD_CHECK_JOB_STR(v) ((v) ? "must NOT be connected\n" : "must be connected\n")
-#define __THREAD_CHECK_JOB(h,v1,v2,v3,v4) do {\
-        int ret = 0;\
-        if(!!(h->f_output) == v1) {ERR("Out-Put %s", __THREAD_CHECK_JOB_STR(v1)); ret |=  1;}\
-        if(!!(h->f_inget) == v2)  {ERR("In-Get %s", __THREAD_CHECK_JOB_STR(v2)); ret |=  2;}\
-        if(!!(h->f_input) == v3)  {ERR("In-Put %s", __THREAD_CHECK_JOB_STR(v3));ret |=  4;}\
-        if(!!(h->f_outget) == v4) {ERR("Out-Get %s", __THREAD_CHECK_JOB_STR(v4));ret |=  8;}\
-        if(ret !=0){\
-            return false;\
-        }\
-        return true;\
-     } while(0);
-
-bool
+    bool
 mtpipe_sync_finish(mtnode_handle h)
 {
     ASSERT(h, return false);
@@ -289,11 +276,11 @@ mtpipe_sync_finish(mtnode_handle h)
     if(h->f_input != NULL) {
         fifo_flush(h->f_input);
     }
-    
+
     rendezvous_force(h->mtpipe->rv_init);
-    
+
     ASSERT(rendezvous_meet(h->mtpipe->rv_cleanup), return false);
-    
+
     return true;
 }
 

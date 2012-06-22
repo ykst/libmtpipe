@@ -1,22 +1,22 @@
 #include "fifo.h"
 
 struct __fifo_obj {
-    pthread_mutex_t mutex;
-    bool flush;
-    int rfd;
-    int wfd;
-    int num_bufs;
-    int pipes[2];
+	pthread_mutex_t mutex;
+	bool flush;
+	int rfd;
+	int wfd;
+	int num_bufs;
+	int pipes[2];
 };
 
 fifo_handle fifo_create(void)
 {
 	fifo_handle     h = NULL;
 
-    TALLOC(h, goto error);
+	TALLOC(h, goto error);
 
-    ASSERT(pipe(h->pipes) == 0,
-            goto error);
+	ASSERT(pipe(h->pipes) == 0,
+			goto error);
 
 	h->rfd = h->pipes[0];
 	h->wfd = h->pipes[1];
@@ -26,9 +26,9 @@ fifo_handle fifo_create(void)
 	return h;
 error:
 
-    fifo_delete(h);
+	fifo_delete(h);
 
-    return NULL;
+	return NULL;
 }
 
 void fifo_delete(fifo_handle h)
@@ -36,12 +36,12 @@ void fifo_delete(fifo_handle h)
 
 	if (!h) return;
 
-    close(h->pipes[0]);
-    close(h->pipes[1]);
+	close(h->pipes[0]);
+	close(h->pipes[1]);
 
-    pthread_mutex_destroy(&h->mutex);
+	pthread_mutex_destroy(&h->mutex);
 
-    FREE(h);
+	FREE(h);
 }
 
 bool fifo_get(fifo_handle h, void **ptr)
@@ -53,8 +53,8 @@ bool fifo_get(fifo_handle h, void **ptr)
 	DASSERT(ptr, return false);
 
 	pthread_mutex_lock(&h->mutex);
-    flush = h->flush;
-    pthread_mutex_unlock(&h->mutex);
+	flush = h->flush;
+	pthread_mutex_unlock(&h->mutex);
 
 	if (h->flush) {
 		return false;
@@ -63,7 +63,7 @@ bool fifo_get(fifo_handle h, void **ptr)
 	num_bytes = read(h->pipes[0], ptr, sizeof(ptr));
 
 	if (num_bytes != sizeof(ptr)) {
-        return false;
+		return false;
 	}
 
 	pthread_mutex_lock(&h->mutex);
@@ -75,7 +75,7 @@ bool fifo_get(fifo_handle h, void **ptr)
 
 bool fifo_is_flushed(fifo_handle h)
 {
-    return h->flush;
+	return h->flush;
 }
 
 bool fifo_flush(fifo_handle h)
