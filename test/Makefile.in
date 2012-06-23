@@ -4,8 +4,15 @@ CC=@CC@
 CPPFLAGS+=-I@INCLUDE_DIR@ -I@CINCLUDE_DIR@
 CFLAGS+=-Wall -Werror
 LDFLAGS+=-L@LIB_DIR@
-LDLIBS+=-lrt -lpthread
 OBJS=main.o
+
+UNAME := $(shell uname)
+
+ifeq ($(UNAME), Darwin)
+    LDLIBS=
+else
+    LDLIBS=-lrt -lpthread
+endif
 
 .PHONY: all clean
 
