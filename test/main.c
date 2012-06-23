@@ -106,9 +106,9 @@ int main(int argc, char **argv)
     ASSERT(pthread_sigmask(SIG_SETMASK, &mask, NULL) == 0,
             return 1);
 
-    struct timer_obj timer = {};
+    struct bmtimer_obj bmtimer = {};
 
-    timer_lap_start(&timer);
+    bmtimer_lap_start(&bmtimer);
 
     ASSERT(mtpipe_start(mtp), return 1);
 
@@ -121,9 +121,9 @@ int main(int argc, char **argv)
 
     sigwait(&wait, &sig);
 
-    timer_lap_end(&timer);
+    bmtimer_lap_end(&bmtimer);
 
-    timer_print(&timer, __FUNCTION__);
+    bmtimer_print(&bmtimer, __FUNCTION__);
 
     mtpipe_done(mtp);
 

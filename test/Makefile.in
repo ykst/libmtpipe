@@ -4,6 +4,7 @@ CC=@CC@
 CPPFLAGS+=-I@INCLUDE_DIR@ -I@CINCLUDE_DIR@
 CFLAGS+=-Wall -Werror
 LDFLAGS+=-L@LIB_DIR@
+LDLIBS+=-lrt -lpthread
 OBJS=main.o
 
 .PHONY: all clean
@@ -11,10 +12,10 @@ OBJS=main.o
 all: $(TARGET) $(TARGET)d
 
 $(TARGET): $(OBJS)
-	$(CC) $(LDFLAGS) -o $@ $^ -lmtpipe
+	$(CC) $(LDFLAGS) -o $@ $^ $(LDLIBS) -lmtpipe 
 
 $(TARGET)d: $(OBJS)
-	$(CC) $(LDFLAGS) -o $@ $^ -lmtpiped
+	$(CC) $(LDFLAGS) -o $@ $^ $(LDLIBS) -lmtpiped
 
 clean:
 	$(RM) $(TARGET) $(OBJS)
