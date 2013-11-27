@@ -11,6 +11,7 @@
 #include "mtpipe.h"
 #include "rendezvous.h"
 #include "fifo.h"
+#include "pause.h"
 
 struct __mtnode_obj {
     fifo_handle f_input;
@@ -34,6 +35,8 @@ struct __mtpipe_obj {
     void *arg;
     rendezvous_handle rv_init;
     rendezvous_handle rv_cleanup;
+    pause_handle pause;
+    bool started;
     struct list_head_t fifo_list;
     struct list_head_t node_list;
     int id_max;
@@ -84,6 +87,7 @@ void mtpipe_delete(mtpipe_handle h)
 
     rendezvous_delete(h->rv_init);
     rendezvous_delete(h->rv_cleanup);
+    pause_delete(h->pause);
 
     list_destroy(&h->fifo_list);
     list_destroy(&h->node_list);
@@ -112,6 +116,7 @@ mtpipe_handle mtpipe_create(void *arg)
 
     ASSERT(nh->rv_init = rendezvous_create(), goto error);
     ASSERT(nh->rv_cleanup = rendezvous_create(), goto error);
+    ASSERT(nh->pause = pause_create(), goto error);
 
     nh->arg = arg;
 
@@ -127,6 +132,11 @@ error:
 
 bool mtpipe_start(mtpipe_handle h)
 {
+    if (h->started) {
+        pause_off(h->pause);
+        return true;
+    }
+
     DBG("Starting %d threads\n",h->id_max);
 
     ASSERT(rendezvous_init_count(h->rv_init, h->id_max),
@@ -140,6 +150,8 @@ bool mtpipe_start(mtpipe_handle h)
     list_foreach(&h->node_list, node) {
         ASSERT(__start_thread(node), return false);
     }
+
+    h->started = true;
 
     return true;
 }
@@ -407,4 +419,24 @@ bool mtnode_output(mtnode_handle h, void *ptr)
     DASSERT(h, return false);
 
     return fifo_put(h->f_output, ptr);
+}
+
+void mtnode_pause_wait(mtnode_handle h)
+{
+    pause_check_wait(h->mtpipe->pause);
+}
+
+void mtpipe_pause_on(mtpipe_handle h)
+{
+    pause_on(h->pause);
+}
+
+void mtpipe_pause_off(mtpipe_handle h)
+{
+    pause_off(h->pause);
+}
+
+bool mtpipe_is_pause(mtpipe_handle h)
+{
+    return pause_check(h->pause);
 }
