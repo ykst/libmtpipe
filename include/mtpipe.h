@@ -39,6 +39,8 @@ bool mtpipe_joint(
 /* Pipeline condition query */
 bool mtnode_is_done(mtnode_handle h) __attribute__((warn_unused_result));
 bool mtpipe_is_done(mtpipe_handle h) __attribute__((warn_unused_result));
+/* Local parameter */
+void *mtnode_priv(mtnode_handle);
 /* Dataflow */
 bool mtnode_inget(mtnode_handle h, void **ptr) __attribute__((warn_unused_result));
 bool mtnode_outget(mtnode_handle h, void **ptr) __attribute__((warn_unused_result));

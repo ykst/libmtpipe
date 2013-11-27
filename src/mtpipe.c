@@ -101,7 +101,6 @@ static bool __mtnode_cleaner(struct list_t *e)
 
     list_downcast(h, e);
 
-    FREE(h->priv);
     FREE(h->name);
     FREE(h);
 
@@ -440,4 +439,10 @@ void mtpipe_pause_off(mtpipe_handle h)
 bool mtpipe_is_pause(mtpipe_handle h)
 {
     return pause_check(h->pause);
+}
+
+void *mtnode_priv(mtnode_handle h)
+{
+    DASSERT(h, return NULL);
+    return h->priv;
 }
