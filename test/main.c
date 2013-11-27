@@ -2,6 +2,7 @@
 #include <signal.h>
 #include <pthread.h>
 /* cinclude */
+#define __DEBUG
 #include "common.h"
 #include "bm/timer.h"
 /* global */
@@ -24,6 +25,8 @@ void *thr_1(void *arg)
         int * ptr;
 
         CHECK(mtnode_outget(h, (void **)&ptr), break);
+
+        mtnode_pause_wait(h);
 
         DBG("pid %d: num %d\n",
                 pthread_mach_thread_np(pthread_self()),
@@ -54,13 +57,15 @@ void *thr_2(void *arg)
 
         CHECK(mtnode_inget(h, (void **)&ptr), break);
 
+        mtnode_pause_wait(h);
+
         DBG("pid %d: num %d\n",
                 pthread_mach_thread_np(pthread_self()),
                 *ptr);
 
         *ptr += 1;
 
-        if(*ptr > 100*10000) {
+        if(*ptr > 50*10000) {
             break;
         }
 
