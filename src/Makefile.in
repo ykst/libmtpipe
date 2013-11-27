@@ -8,8 +8,8 @@ LIB = libmtpipe
 DBGLIB = @LIB_DIR@/$(LIB)d.so
 RELLIB = @LIB_DIR@/$(LIB).so
 
-SRCS = mtpipe.c fifo.c rendezvous.c
-HDRS = @INCLUDE_DIR@/mtpipe.h fifo.h rendezvous.h
+SRCS = mtpipe.c fifo.c rendezvous.c pause.c
+HDRS = @INCLUDE_DIR@/mtpipe.h fifo.h rendezvous.h pause.h
 
 DBGOBJS = $(SRCS:%.c=debug/%.o)
 RELOBJS = $(SRCS:%.c=release/%.o)
