@@ -122,6 +122,7 @@ mtpipe_handle mtpipe_create(void *arg)
 
     nh->fifo_list.cleaner = __fifo_elem_cleaner;
     nh->node_list.cleaner = __mtnode_cleaner;
+    nh->started = false;
 
     return nh;
 
