@@ -421,6 +421,34 @@ bool mtnode_output(mtnode_handle h, void *ptr)
     return fifo_put(h->f_output, ptr);
 }
 
+int mtnode_num_outget(mtnode_handle h)
+{
+    DASSERT(h, return 0);
+
+    return fifo_get_num(h->f_outget);
+}
+
+int mtnode_num_output(mtnode_handle h)
+{
+    DASSERT(h, return 0);
+
+    return fifo_get_num(h->f_output);
+}
+
+int mtnode_num_inget(mtnode_handle h)
+{
+    DASSERT(h, return 0);
+
+    return fifo_get_num(h->f_inget);
+}
+
+int mtnode_num_input(mtnode_handle h)
+{
+    DASSERT(h, return 0);
+
+    return fifo_get_num(h->f_input);
+}
+
 void mtnode_pause_wait(mtnode_handle h)
 {
     pause_check_wait(h->mtpipe->pause);
