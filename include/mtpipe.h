@@ -22,6 +22,7 @@ mtnode_handle mtnode_create(
         int priority, 
         void * params) __attribute__((warn_unused_result));
 
+mtnode_handle mtnode_create_conduit(mtpipe_handle h);
 void mtpipe_delete(mtpipe_handle h);
 /* Pipeline construction */
 bool mtpipe_chain(

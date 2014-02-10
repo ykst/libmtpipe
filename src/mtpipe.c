@@ -148,7 +148,9 @@ bool mtpipe_start(mtpipe_handle h)
     mtnode_handle node;
 
     list_foreach(&h->node_list, node) {
-        ASSERT(__start_thread(node), return false);
+        if (node->fxn) {
+            ASSERT(__start_thread(node), return false);
+        }
     }
 
     h->started = true;
@@ -209,6 +211,21 @@ mtnode_handle mtnode_create(
     nh->name       = strdup(name);
     nh->arg        = h->arg;
     nh->priv       = params;
+    nh->mtpipe     = h;
+    nh->id         = h->id_max++;
+
+    list_append(&h->node_list, &nh->list_entry);
+
+    return nh;
+}
+
+mtnode_handle mtnode_create_conduit(mtpipe_handle h)
+{
+    mtnode_handle nh = NULL;
+
+    TALLOC(nh, return NULL);
+
+    nh->arg        = h->arg;
     nh->mtpipe     = h;
     nh->id         = h->id_max++;
 
@@ -474,3 +491,4 @@ void *mtnode_priv(mtnode_handle h)
     DASSERT(h, return NULL);
     return h->priv;
 }
+
