@@ -17,25 +17,25 @@
 
 @implementation MTNode
 
-- (Freight *)inGet
+- (id)inGet
 {
     void *rowp = nil;
     if (!mtnode_inget(self.mtnode, &rowp)) {
         return nil;
     }
-    return (__bridge Freight *)rowp;
+    return (__bridge id)rowp;
 }
 
-- (Freight *)outGet
+- (id)outGet
 {
     void *rowp = nil;
     if (!mtnode_outget(self.mtnode, &rowp)) {
         return nil;
     }
-    return (__bridge Freight *)rowp;
+    return (__bridge id)rowp;
 }
 
-- (BOOL)inPut:(Freight *)freight
+- (BOOL)inPut:(id)freight
 {
     if (!mtnode_input(self.mtnode, (__bridge void *)freight)) {
         return NO;
@@ -43,7 +43,7 @@
     return YES;
 }
 
-- (BOOL)outPut:(Freight *)freight
+- (BOOL)outPut:(id)freight
 {
     if (!mtnode_output(self.mtnode, (__bridge void *)freight)) {
         return NO;
@@ -56,10 +56,10 @@
     return mtnode_num_outget(self.mtnode);
 }
 
-- (BOOL)jointJob:(BOOL (^)(Freight *, Freight *))block
+- (BOOL)jointJob:(BOOL (^)(id , id))block
 {
-    Freight *src = (id)[self inGet];
-    Freight *dst = (id)[self outGet];
+    id src = (id)[self inGet];
+    id dst = (id)[self outGet];
 
     if (!src || !dst) return NO;
 
@@ -71,9 +71,9 @@
     return YES;
 }
 
-- (BOOL)sinkJob:(BOOL (^)(Freight *))block
+- (BOOL)sinkJob:(BOOL (^)(id))block
 {
-    Freight *f = (id)[self inGet];
+    id f = (id)[self inGet];
 
     if (!f) return NO;
 
@@ -235,7 +235,7 @@ static void *__node_loop(void *arg)
     }
 }
 
-- (Freight *)retainFreight:(Freight *)freight
+- (id)retainFreight:(id)freight
 {
     [_freights addObject:freight];
     return freight;

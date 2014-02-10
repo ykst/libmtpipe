@@ -9,8 +9,6 @@
 #import <Foundation/Foundation.h>
 #include <mtpipe.h>
 
-#import "Freight.h"
-
 @class MTNode;
 
 @interface MTPipeline : NSObject
@@ -31,7 +29,7 @@
 - (void)converge;
 - (void)killall;
 
-- (Freight *)retainFreight:(Freight *)freight;
+- (id)retainFreight:(id)freight;
 @end
 
 @interface MTNode : NSObject
@@ -39,11 +37,11 @@
 @property (nonatomic, readonly) BOOL (^process)(MTNode *);
 @property (nonatomic, readonly) void (^teardown)(MTNode *);
 @property (nonatomic, readonly) NSUInteger num_out_get;
-- (Freight *)inGet;
-- (Freight *)outGet;
-- (BOOL)inPut:(Freight *)freight;
-- (BOOL)outPut:(Freight *)freight;
-- (BOOL)jointJob:(BOOL (^)(Freight *src, Freight *dst))block;
-- (BOOL)sinkJob:(BOOL (^)(Freight *src))block;
+- (id)inGet;
+- (id)outGet;
+- (BOOL)inPut:(id)freight;
+- (BOOL)outPut:(id)freight;
+- (BOOL)jointJob:(BOOL (^)(id src, id dst))block;
+- (BOOL)sinkJob:(BOOL (^)(id src))block;
 
 @end
