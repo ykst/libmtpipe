@@ -182,7 +182,6 @@ static void *__node_loop(void *arg)
 
 - (void)dealloc
 {
-    [super dealloc];
     if (_handle) {
         mtpipe_delete(_handle);
         _handle = nil;
