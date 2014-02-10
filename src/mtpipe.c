@@ -150,6 +150,8 @@ bool mtpipe_start(mtpipe_handle h)
     list_foreach(&h->node_list, node) {
         if (node->fxn) {
             ASSERT(__start_thread(node), return false);
+        } else {
+            node->started = true;
         }
     }
 
@@ -184,8 +186,10 @@ bool mtpipe_converge(mtpipe_handle h)
             DBG("join up %s thread (id.%d): status %p\n",node->name,node->id, status);
 
         } else {
-            ERR("aborted %s thread\n",node->name);
-            ret = false;
+            if (node->fxn) {
+                ERR("aborted %s thread\n",node->name);
+                ret = false;
+            }
         }
     }
 
@@ -227,7 +231,6 @@ mtnode_handle mtnode_create_conduit(mtpipe_handle h)
 
     nh->arg        = h->arg;
     nh->mtpipe     = h;
-    nh->id         = h->id_max++;
 
     list_append(&h->node_list, &nh->list_entry);
 
@@ -330,7 +333,6 @@ static int __fifo_connect(mtpipe_handle pool, fifo_handle *lhs, fifo_handle *rhs
 
     return true;
 }
-
 
 /* connect OUTPUT<->INGET and OUTGET<->INPUT 
  * the method is actually the composition of 'chain' and 'band'. 
