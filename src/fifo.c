@@ -115,7 +115,7 @@ int fifo_get_num(fifo_handle h)
 {
     int             num_bufs;
 
-    DASSERT(h,return false);
+    ASSERT(h,return 0);
 
     num_bufs = h->num_bufs;
 
