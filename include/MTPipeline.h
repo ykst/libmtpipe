@@ -33,9 +33,9 @@
 @end
 
 @interface MTNode : NSObject
-@property (nonatomic, readonly) BOOL (^setup)(MTNode *);
-@property (nonatomic, readonly) BOOL (^process)(MTNode *);
-@property (nonatomic, readonly) void (^teardown)(MTNode *);
+@property (nonatomic, copy) BOOL (^setup)(MTNode *);
+@property (nonatomic, copy) BOOL (^process)(MTNode *);
+@property (nonatomic, copy) void (^teardown)(MTNode *);
 @property (nonatomic, readonly) NSUInteger num_out_get;
 - (id)inGet;
 - (id)outGet;

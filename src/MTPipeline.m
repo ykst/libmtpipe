@@ -10,9 +10,6 @@
 
 @interface MTNode()
 @property (nonatomic, readwrite) mtnode_handle mtnode;
-@property (nonatomic, readwrite) BOOL (^setup)(MTNode *);
-@property (nonatomic, readwrite) BOOL (^process)(MTNode *);
-@property (nonatomic, readwrite) void (^teardown)(MTNode *);
 @end
 
 @implementation MTNode
