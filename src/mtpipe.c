@@ -473,6 +473,11 @@ void mtnode_pause_wait(mtnode_handle h)
     pause_check_wait(h->mtpipe->pause);
 }
 
+bool mtnode_is_pause(mtnode_handle h)
+{
+    return pause_check(h->mtpipe->pause);
+}
+
 void mtpipe_pause_on(mtpipe_handle h)
 {
     pause_on(h->pause);

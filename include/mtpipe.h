@@ -56,6 +56,7 @@ bool mtnode_done(mtnode_handle h);
 bool mtpipe_done(mtpipe_handle h);
 /* Pause pipeline */
 void mtnode_pause_wait(mtnode_handle h);
+bool mtnode_is_pause(mtnode_handle h);
 void mtpipe_pause_on(mtpipe_handle h);
 void mtpipe_pause_off(mtpipe_handle h);
 bool mtpipe_is_pause(mtpipe_handle h);

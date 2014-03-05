@@ -53,6 +53,11 @@
     return mtnode_num_outget(self.mtnode);
 }
 
+- (BOOL)isPaused
+{
+    return mtnode_is_pause(self.mtnode);
+}
+
 - (BOOL)jointJob:(BOOL (^)(id , id))block
 {
     id src = (id)[self inGet];

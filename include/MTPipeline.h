@@ -39,6 +39,7 @@
 @property (nonatomic, readonly) NSUInteger num_out_get;
 - (id)inGet;
 - (id)outGet;
+- (BOOL)isPaused;
 - (BOOL)inPut:(id)freight;
 - (BOOL)outPut:(id)freight;
 - (BOOL)jointJob:(BOOL (^)(id src, id dst))block;
