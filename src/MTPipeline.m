@@ -74,7 +74,9 @@
 
     if (!f) return NO;
 
-    if (!block(f)) return NO;
+    if (block) {
+        if (!block(f)) return NO;
+    }
 
     if (![self inPut:f]) return NO;
 
