@@ -81,6 +81,16 @@ static int __add_fifo_elem(mtpipe_handle h, fifo_handle fifo)
     return true;
 }
 
+static void mtpipe_flush_all(mtpipe_handle h)
+{
+    struct list_head_t *p_head = &h->fifo_list;
+    struct __fifo_elem_t *p = NULL;
+
+    list_foreach(p_head, p) {
+        fifo_flush(p->fifo);
+    }
+}
+
 void mtpipe_delete(mtpipe_handle h)
 {
     if(!h) return;
@@ -187,7 +197,7 @@ bool mtpipe_converge(mtpipe_handle h)
 
         } else {
             if (node->fxn) {
-                ERR("aborted %s thread\n",node->name);
+                ERROR("aborted %s thread\n",node->name);
                 ret = false;
             }
         }
@@ -301,14 +311,6 @@ mtpipe_sync_finish(mtnode_handle h)
 
     mtnode_done(h);
 
-    if(h->f_output != NULL) {
-        fifo_flush(h->f_output);
-    }
-
-    if(h->f_input != NULL) {
-        fifo_flush(h->f_input);
-    }
-
     rendezvous_force(h->mtpipe->rv_init);
 
     ASSERT(rendezvous_meet(h->mtpipe->rv_cleanup), return false);
@@ -327,7 +329,7 @@ static int __fifo_connect(mtpipe_handle pool, fifo_handle *lhs, fifo_handle *rhs
     } else if(*rhs != NULL) {
         *lhs = *rhs;
     } else {
-        ERR("duplicated thread connection detected\n");
+        ERROR("duplicated thread connection detected\n");
         return false;
     }
 
@@ -409,6 +411,8 @@ bool mtpipe_done(mtpipe_handle h)
 
     h->done = true;
 
+    mtpipe_flush_all(h);
+
     return true;
 }
 
@@ -438,6 +442,20 @@ bool mtnode_output(mtnode_handle h, void *ptr)
     DASSERT(h, return false);
 
     return fifo_put(h->f_output, ptr);
+}
+
+bool mtnode_feed_inget(mtnode_handle h, void *ptr)
+{
+    DASSERT(h, return false);
+
+    return fifo_put(h->f_inget, ptr);
+}
+
+bool mtnode_feed_outget(mtnode_handle h, void *ptr)
+{
+    DASSERT(h, return false);
+
+    return fifo_put(h->f_outget, ptr);
 }
 
 int mtnode_num_outget(mtnode_handle h)

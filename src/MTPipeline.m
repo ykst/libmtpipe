@@ -14,6 +14,22 @@
 
 @implementation MTNode
 
+- (BOOL)feedInGet:(id)freight
+{
+    if (!mtnode_feed_inget(self.mtnode, (__bridge void *)freight)) {
+        return NO;
+    }
+    return YES;
+}
+
+- (BOOL)feedOutGet:(id)freight
+{
+    if (!mtnode_feed_outget(self.mtnode, (__bridge void *)freight)) {
+        return NO;
+    }
+    return YES;
+}
+
 - (id)inGet
 {
     void *rowp = nil;

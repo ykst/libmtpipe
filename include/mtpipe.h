@@ -47,6 +47,8 @@ bool mtnode_inget(mtnode_handle h, void **ptr) __attribute__((warn_unused_result
 bool mtnode_outget(mtnode_handle h, void **ptr) __attribute__((warn_unused_result));
 bool mtnode_input(mtnode_handle h, void *ptr) __attribute__((warn_unused_result));
 bool mtnode_output(mtnode_handle h, void *ptr) __attribute__((warn_unused_result));
+bool mtnode_feed_inget(mtnode_handle h, void *ptr) __attribute__((warn_unused_result));
+bool mtnode_feed_outget(mtnode_handle h, void *ptr) __attribute__((warn_unused_result));
 int mtnode_num_inget(mtnode_handle h) __attribute__((warn_unused_result));
 int mtnode_num_outget(mtnode_handle h) __attribute__((warn_unused_result));
 int mtnode_num_input(mtnode_handle h) __attribute__((warn_unused_result));

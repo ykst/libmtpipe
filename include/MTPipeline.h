@@ -37,6 +37,8 @@
 @property (nonatomic, copy) BOOL (^process)(MTNode *);
 @property (nonatomic, copy) void (^teardown)(MTNode *);
 @property (nonatomic, readonly) NSUInteger num_out_get;
+- (BOOL)feedInGet:(id)freight;
+- (BOOL)feedOutGet:(id)freight;
 - (id)inGet;
 - (id)outGet;
 - (BOOL)isPaused;

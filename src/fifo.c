@@ -46,7 +46,7 @@ void fifo_delete(fifo_handle h)
 
 bool fifo_get(fifo_handle h, void **ptr)
 {
-    int  num_bytes;
+    size_t  num_bytes;
     bool flush;
 
     DASSERT(h,return false);
