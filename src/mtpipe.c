@@ -6,7 +6,11 @@
 #include <pthread.h>
 /* global */
 #include "common.h"
+#ifdef COCOAPODS
+#include "list.h"
+#else
 #include "ds/list.h"
+#endif
 /* local */
 #include "mtpipe.h"
 #include "rendezvous.h"
@@ -197,7 +201,7 @@ bool mtpipe_converge(mtpipe_handle h)
 
         } else {
             if (node->fxn) {
-                ERROR("aborted %s thread\n",node->name);
+                ERR("aborted %s thread\n",node->name);
                 ret = false;
             }
         }
@@ -329,7 +333,7 @@ static int __fifo_connect(mtpipe_handle pool, fifo_handle *lhs, fifo_handle *rhs
     } else if(*rhs != NULL) {
         *lhs = *rhs;
     } else {
-        ERROR("duplicated thread connection detected\n");
+        ERR("duplicated thread connection detected\n");
         return false;
     }
 

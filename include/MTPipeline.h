@@ -7,7 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
+
+#ifdef COCOAPOD
+#include "mtpipe.h"
+#else
 #include <mtpipe.h>
+#endif
 
 @class MTNode;
 
