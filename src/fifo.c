@@ -56,7 +56,7 @@ bool fifo_get(fifo_handle h, void **ptr)
     flush = h->flush;
     pthread_mutex_unlock(&h->mutex);
 
-    if (h->flush) {
+    if (flush) {
         return false;
     }
 
@@ -80,7 +80,7 @@ bool fifo_is_flushed(fifo_handle h)
 
 bool fifo_flush(fifo_handle h)
 {
-    char            ch = 0xff;
+    char ch = 0xff;
 
     DASSERT(h, return false);
 
