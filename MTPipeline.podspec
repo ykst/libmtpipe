@@ -14,7 +14,7 @@ Pod::Spec.new do |s|
   s.source       = { :git => "https://github.com/ykst/libmtpipe.git", :tag => "0.2.0" }
 
   #s.header_mappings_dir = 'external/cinclude/include'
-  s.source_files  = 'src/*.{h,c,m}', 'include/*.h', 'external/**/*.{h,c}'
+  s.source_files  = 'src/*.{h,c,m}', 'include/*.h', 'external/cinclude/**/*.h'
   s.exclude_files = 'Makefile'
   s.prefix_header_file = 'external/cinclude/include/common.h'
   s.public_header_files = 'include/*.h'
