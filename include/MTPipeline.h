@@ -42,6 +42,9 @@
 @property (nonatomic, copy) BOOL (^process)(MTNode *);
 @property (nonatomic, copy) void (^teardown)(MTNode *);
 @property (nonatomic, readonly) NSUInteger num_out_get;
+@property (nonatomic, readonly) NSUInteger num_out_put;
+@property (nonatomic, readonly) NSUInteger num_in_get;
+@property (nonatomic, readonly) NSUInteger num_in_put;
 - (BOOL)feedInGet:(id)freight;
 - (BOOL)feedOutGet:(id)freight;
 - (id)inGet;
@@ -51,5 +54,6 @@
 - (BOOL)outPut:(id)freight;
 - (BOOL)jointJob:(BOOL (^)(id src, id dst))block;
 - (BOOL)sinkJob:(BOOL (^)(id src))block;
+- (BOOL)sourceJob:(BOOL (^)(id))block;
 
 @end

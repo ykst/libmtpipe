@@ -69,6 +69,21 @@
     return mtnode_num_outget(self.mtnode);
 }
 
+- (NSUInteger)num_out_put
+{
+    return mtnode_num_output(self.mtnode);
+}
+
+- (NSUInteger)num_in_get
+{
+    return mtnode_num_inget(self.mtnode);
+}
+
+- (NSUInteger)num_in_put
+{
+    return mtnode_num_input(self.mtnode);
+}
+
 - (BOOL)isPaused
 {
     return mtnode_is_pause(self.mtnode);
@@ -100,6 +115,21 @@
     }
 
     if (![self inPut:f]) return NO;
+
+    return YES;
+}
+
+- (BOOL)sourceJob:(BOOL (^)(id))block
+{
+    id f = (id)[self outGet];
+
+    if (!f) return NO;
+
+    if (block) {
+        if (!block(f)) return NO;
+    }
+
+    if (![self outPut:f]) return NO;
 
     return YES;
 }
